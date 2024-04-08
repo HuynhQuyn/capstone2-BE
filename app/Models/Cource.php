@@ -17,6 +17,7 @@ class Cource extends Model
         'cource_type',
         'cource_introduce',
         'cource_description',
+        'chapter',
         'is_block',
     ];
 }

@@ -33,11 +33,17 @@ Route::group(['middleware' => 'jwt'], function ($router) {
 
         Route::group(['prefix' => '/cource'], function () {
             Route::post('/create', [\App\Http\Controllers\Admin\CourceController::class, 'store']);
-            Route::get('/get-data', [\App\Http\Controllers\Admin\CourceController::class, 'getData']);
+            Route::post('/get-data', [\App\Http\Controllers\Admin\CourceController::class, 'getData']);
             Route::get('/get-data/{id}', [\App\Http\Controllers\Admin\CourceController::class, 'getDataById']);
             Route::post('/update', [\App\Http\Controllers\Admin\CourceController::class, 'update']);
             Route::get('/update-status/{id}', [\App\Http\Controllers\Admin\CourceController::class, 'updateStatus']);
             Route::get('/destroy/{id}', [\App\Http\Controllers\Admin\CourceController::class, 'destroy']);
+        });
+
+        Route::group(['prefix' => '/chapter'], function () {
+            Route::post('/create', [\App\Http\Controllers\Admin\ChapterController::class, 'store']);
+            Route::get('/get-data/{id}', [\App\Http\Controllers\Admin\ChapterController::class, 'getData']);
+            Route::post('/update', [\App\Http\Controllers\Admin\ChapterController::class, 'update']);
         });
     });
 });

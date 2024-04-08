@@ -20,6 +20,8 @@ return new class extends Migration
             $table->integer('cource_type');
             $table->longText('cource_introduce');
             $table->longText('cource_description');
+            $table->longText('cource_description');
+            $table->longText('chapter')->nullable();
             $table->integer('is_block')->default(0);
             $table->timestamps();
         });

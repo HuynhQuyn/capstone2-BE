@@ -8,11 +8,14 @@ use Illuminate\Http\Request;
 
 class CourceController extends Controller
 {
-    public function getData()
+    public function getData(Request $request)
     {
         $cources = Cource::select('cources.*')
-            ->orderBy('id', 'DESC')
-            ->paginate(5);
+            ->orderBy('id', 'DESC');
+        if($request->cource_name != ""){
+            $cources = $cources->where('cource_name', 'like' , '%' . $request->cource_name  . '%');
+        }
+        $cources = $cources->paginate(5);
         if (count($cources) > 0) {
             return response()->json([
                 'cources'  => $cources,
@@ -25,8 +28,8 @@ class CourceController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        if(isset($request['image'])){
-            $response = cloudinary()->upload($request['image']->getRealPath())->getSecurePath();
+        if(isset($request['cource_image'])){
+            $response = cloudinary()->upload($request['cource_image']->getRealPath())->getSecurePath();
         }
 
         $data["cource_image"] = $response ?? "";
@@ -67,18 +70,19 @@ class CourceController extends Controller
 
     public function update(Request $request)
     {
-        $football_pitchs = Cource::where("id", $request->id)->first();
+        $cources = Cource::where("id", $request->id)->first();
         $data = $request->all();
-        if(isset($request['image'])){
-            if(!is_string($request['image'])){
-                $response = cloudinary()->upload($request['image']->getRealPath())->getSecurePath();
+        $response = "";
+        if(isset($request['cource_image'])){
+            if(!is_string($request['cource_image'])){
+                $response = cloudinary()->upload($request['cource_image']->getRealPath())->getSecurePath();
             }else{
-                $response = $request['image'];
+                $response = $request['cource_image'];
             }
         }
-        $data["image"] = $response;
-        if ($football_pitchs) {
-            $football_pitchs->update($data);
+        $data["cource_image"] = $response;
+        if ($cources) {
+            $cources->update($data);
             return response()->json([
                 'message' => 'Successfully update a cource',
             ], 200);
