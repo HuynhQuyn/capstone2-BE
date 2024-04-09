@@ -45,5 +45,13 @@ Route::group(['middleware' => 'jwt'], function ($router) {
             Route::get('/get-data/{id}', [\App\Http\Controllers\Admin\ChapterController::class, 'getData']);
             Route::post('/update', [\App\Http\Controllers\Admin\ChapterController::class, 'update']);
         });
+
+        Route::group(['prefix' => '/lesson'], function () {
+            Route::post('/create', [\App\Http\Controllers\Admin\LessonController::class, 'store']);
+            Route::post('/get-data', [\App\Http\Controllers\Admin\LessonController::class, 'getData']);
+            Route::get('/get-data/{id}', [\App\Http\Controllers\Admin\LessonController::class, 'getDataById']);
+            Route::post('/update', [\App\Http\Controllers\Admin\LessonController::class, 'update']);
+            Route::get('/destroy/{id}', [\App\Http\Controllers\Admin\LessonController::class, 'destroy']);
+        });
     });
 });

@@ -23,12 +23,12 @@ class ChapterController extends Controller
 
     public function store(Request $request)
     {
-        $chapters = Cource::where("id", $request->id)->get();
+        $chapters = Cource::where("id", $request->id)->first();
         if($chapters){
             $chapters->chapter = $request->chapter;
             $chapters->save();
             return response()->json([
-                'message' => 'Successfully added a new cource',
+                'message' => 'Successfully added a new chapter',
             ], 200);
         }
         return response()->json(['error' => 'There are no cources in the system'], 400);
@@ -41,7 +41,7 @@ class ChapterController extends Controller
             $chapters->chapter = $request->chapter;
             $chapters->save();
             return response()->json([
-                'message' => 'Successfully update a cource',
+                'message' => 'Successfully update a chapter',
             ], 200);
         }
         return response()->json([
