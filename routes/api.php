@@ -24,6 +24,7 @@ Route::group(['middleware' => 'jwt'], function ($router) {
     Route::get('/logout', [\App\Http\Controllers\AuthController::class, 'actionLogout']);
 
     Route::group(['prefix' => '/admin'], function () {
+        Route::get('/list-user', [\App\Http\Controllers\Admin\UserController::class, 'getList']);
         Route::group(['prefix' => '/user'], function () {
             Route::post('/create', [\App\Http\Controllers\Admin\UserController::class, 'store']);
             Route::post('/get-data', [\App\Http\Controllers\Admin\UserController::class, 'getData']);
@@ -44,6 +45,8 @@ Route::group(['middleware' => 'jwt'], function ($router) {
             Route::post('/create', [\App\Http\Controllers\Admin\ChapterController::class, 'store']);
             Route::get('/get-data/{id}', [\App\Http\Controllers\Admin\ChapterController::class, 'getData']);
             Route::post('/update', [\App\Http\Controllers\Admin\ChapterController::class, 'update']);
+            Route::post('/check-is-destroy', [\App\Http\Controllers\Admin\ChapterController::class, 'destroy']);
+
         });
 
         Route::group(['prefix' => '/lesson'], function () {
@@ -52,6 +55,21 @@ Route::group(['middleware' => 'jwt'], function ($router) {
             Route::get('/get-data/{id}', [\App\Http\Controllers\Admin\LessonController::class, 'getDataById']);
             Route::post('/update', [\App\Http\Controllers\Admin\LessonController::class, 'update']);
             Route::get('/destroy/{id}', [\App\Http\Controllers\Admin\LessonController::class, 'destroy']);
+            Route::post('/change-position', [\App\Http\Controllers\Admin\LessonController::class, 'changePosition']);
+        });
+
+        Route::group(['prefix' => '/class'], function () {
+            Route::post('/create', [\App\Http\Controllers\Admin\ClassRoomController::class, 'store']);
+            Route::post('/get-data', [\App\Http\Controllers\Admin\ClassRoomController::class, 'getData']);
+            Route::get('/get-data/{id}', [\App\Http\Controllers\Admin\ClassRoomController::class, 'getDataById']);
+            Route::post('/update', [\App\Http\Controllers\Admin\ClassRoomController::class, 'update']);
+            Route::get('/destroy/{id}', [\App\Http\Controllers\Admin\ClassRoomController::class, 'destroy']);
+        });
+
+        Route::group(['prefix' => '/class-detail'], function () {
+            Route::get('/get-data/{id_class}', [\App\Http\Controllers\Admin\ClassDetailController::class, 'getData']);
+            Route::get('/get-data-by-id/{id}', [\App\Http\Controllers\Admin\ClassDetailController::class, 'getDataById']);
+            Route::post('/update', [\App\Http\Controllers\Admin\ClassDetailController::class, 'update']);
         });
     });
 });

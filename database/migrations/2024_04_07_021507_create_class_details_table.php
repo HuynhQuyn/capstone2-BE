@@ -13,15 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('cources', function (Blueprint $table) {
+        Schema::create('class_details', function (Blueprint $table) {
             $table->id();
-            $table->string('cource_name');
-            $table->longText('cource_image');
-            $table->integer('cource_type');
-            $table->longText('cource_introduce');
-            $table->longText('cource_description');
-            $table->longText('chapter')->nullable();
-            $table->integer('is_block')->default(1);
+            $table->string('title');
+            $table->string('date');
+            $table->string('link')->nullable();
+            $table->integer('id_excercise')->nullable();
+            $table->integer('id_class');
             $table->timestamps();
         });
     }
@@ -33,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cources');
+        Schema::dropIfExists('class_details');
     }
 };

@@ -5,19 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Lesson extends Model
+class ClassRoom extends Model
 {
     use HasFactory;
-
-    protected $table = 'lessons';
+    protected $table = 'class_rooms';
 
     protected $fillable = [
-        'lesson_name',
-        'lesson_video',
+        'duration',
+        'class_name',
         'time',
-        'id_excercise',
+        'weekday_selection',
+        'room_id',
         'id_cource',
-        'id_chapter',
-        'position',
+        'teacher',
+        'students',
     ];
 }

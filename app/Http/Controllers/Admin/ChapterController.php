@@ -48,4 +48,20 @@ class ChapterController extends Controller
             'error' => "The cource is not correct",
         ], 400);
     }
+
+    public function destroy(Request $request)
+    {
+        $chapters = Cource::where("cources.id", $request->id_cource)
+                            ->where("lessons.id_chapter", $request->id_chapter)
+                            ->join('lessons', "lessons.id_cource", "cources.id")
+                            ->get();
+        if(count($chapters) > 0){
+            return response()->json([
+                'status' => false,
+            ], 200);
+        }
+        return response()->json([
+            'status' => true,
+        ], 200);
+    }
 }

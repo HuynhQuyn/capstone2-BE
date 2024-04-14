@@ -85,4 +85,17 @@ class UserController extends Controller
         }
         return $random_string;
     }
+
+    public function getList()
+    {
+        $user = User::where("id_role", 0)->orderBy('id', 'DESC')->where('is_block', 0)->get();
+        if (count($user) > 0) {
+            return response()->json([
+                'users'  => $user,
+            ], 200);
+        }
+        return response()->json([
+            'error'  => "There are no accounts in the system!",
+        ], 400);
+    }
 }

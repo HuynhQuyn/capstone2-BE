@@ -13,7 +13,7 @@ class LessonController extends Controller
     {
         $lessons = Lesson::where('lessons.id_cource', $request->id_cource)
                             ->where("lessons.id_chapter", $request->id_chapter)
-                            ->orderBy('lessons.id', 'DESC')->paginate(5);
+                            ->orderBy('lessons.id', 'DESC')->get();
         if (count($lessons) > 0) {
             return response()->json([
                 'lessons'  => $lessons,
@@ -39,11 +39,19 @@ class LessonController extends Controller
         }
 
         if($check){
+            $lessson_old = Lesson::where('lessons.id_cource', $request->id_cource)
+                                    ->where("lessons.id_chapter", $request->id_chapter)
+                                    ->orderBy('lessons.position', 'DESC')->first();
+
             if(isset($request['lesson_video'])){
-                $response = cloudinary()->uploadVideo($request['lesson_video']->getRealPath())->getSecurePath();
+                $response = cloudinary()->uploadVideo($request['lesson_video']->getRealPath(), [
+                    "resource_type" => "video",
+                    "chunk_size" => 50000000
+                    ])->getSecurePath();
             }
 
             $data["lesson_video"] = $response ?? "";
+            $data["position"] = $lessson_old ? $lessson_old->position + 1 : 1;
             Lesson::create($data);
             return response()->json([
                 'message' => 'Successfully added a new lesson',
@@ -100,6 +108,32 @@ class LessonController extends Controller
             $lesson->update($data);
             return response()->json([
                 'message' => 'Successfully update a lesson',
+            ], 200);
+        }
+        return response()->json([
+            'error' => "The lesson is not correct",
+        ], 400);
+    }
+    public function changePosition(Request $request)
+    {
+        $lesson_previous = Lesson::where("id", $request->id_previous)
+                                    ->where('id_cource', $request->id_cource)
+                                    ->where("id_chapter", $request->id_chapter)
+                                    ->first();
+        $lesson_next = Lesson::where("id", $request->id_next)
+                                    ->where('id_cource', $request->id_cource)
+                                    ->where("id_chapter", $request->id_chapter)
+                                    ->first();
+
+        if ($lesson_previous && $lesson_next) {
+            $tmp = $lesson_previous->position;
+            $lesson_previous->position = $lesson_next->position;
+            $lesson_next->position = $tmp;
+
+            $lesson_previous->save();
+            $lesson_next->save();
+            return response()->json([
+                'message' => 'Successfully change position a lesson',
             ], 200);
         }
         return response()->json([

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('id_excercise')->nullable();
             $table->integer('id_cource');
             $table->integer('id_chapter');
+            $table->integer('position');
             $table->timestamps();
         });
     }
