@@ -71,5 +71,30 @@ Route::group(['middleware' => 'jwt'], function ($router) {
             Route::get('/get-data-by-id/{id}', [\App\Http\Controllers\Admin\ClassDetailController::class, 'getDataById']);
             Route::post('/update', [\App\Http\Controllers\Admin\ClassDetailController::class, 'update']);
         });
+
+        Route::get('/list-question', [\App\Http\Controllers\Admin\QuestionController::class, 'getList']);
+        Route::group(['prefix' => '/question'], function () {
+            Route::post('/create', [\App\Http\Controllers\Admin\QuestionController::class, 'store']);
+            Route::post('/get-data', [\App\Http\Controllers\Admin\QuestionController::class, 'getData']);
+            Route::get('/get-data/{id}', [\App\Http\Controllers\Admin\QuestionController::class, 'getDataById']);
+            Route::post('/update', [\App\Http\Controllers\Admin\QuestionController::class, 'update']);
+            Route::get('/destroy/{id}', [\App\Http\Controllers\Admin\QuestionController::class, 'destroy']);
+        });
+
+        Route::get('/list-excercise', [\App\Http\Controllers\Admin\ExcerciseController::class, 'getList']);
+        Route::get('/list-excercise-offline', [\App\Http\Controllers\Admin\ExcerciseController::class, 'getListOffline']);
+        Route::group(['prefix' => '/excercise'], function () {
+            Route::post('/create', [\App\Http\Controllers\Admin\ExcerciseController::class, 'store']);
+            Route::post('/get-data', [\App\Http\Controllers\Admin\ExcerciseController::class, 'getData']);
+            Route::get('/get-data/{id}', [\App\Http\Controllers\Admin\ExcerciseController::class, 'getDataById']);
+            Route::post('/update', [\App\Http\Controllers\Admin\ExcerciseController::class, 'update']);
+            Route::get('/destroy/{id}', [\App\Http\Controllers\Admin\ExcerciseController::class, 'destroy']);
+        });
+    });
+
+    Route::group(['prefix' => '/user'], function () {
+        Route::post('/list-cource', [\App\Http\Controllers\User\HomePageController::class, 'listCource']);
+        Route::post('/list-lesson', [\App\Http\Controllers\User\HomePageController::class, 'listLesson']);
+
     });
 });

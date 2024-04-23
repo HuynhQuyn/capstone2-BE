@@ -5,15 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ClassDetail extends Model
+class Excercise extends Model
 {
     use HasFactory;
-    protected $table = 'class_details';
+
+    protected $table = 'excercises';
 
     protected $fillable = [
-        'title',
-        'date',
-        'id_class',
-        'link',
+        'excercise_name',
+        'excercise_content',
+        'excercise_type',
     ];
 }

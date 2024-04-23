@@ -94,10 +94,15 @@ class CourceController extends Controller
 
     public function updateStatus($id)
     {
-        $cources = Cource::where("id", $id)->first();
-        if ($cources) {
-            $cources->is_block = !$cources->is_block;
-            $cources->save();
+        $cource = Cource::where("id", $id)->first();
+        if ($cource) {
+            if($cource->is_block == 1 && $cource->cource_type == 1 && !$cource->final_excercise){
+                return response()->json([
+                    'error' => "The course does not have a final exercise",
+                ], 400);
+            }
+            $cource->is_block = !$cource->is_block;
+            $cource->save();
             return response()->json([
                 'message' => 'Successfully update status a cource',
             ], 200);

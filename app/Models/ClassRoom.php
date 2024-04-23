@@ -19,5 +19,6 @@ class ClassRoom extends Model
         'id_cource',
         'teacher',
         'students',
+        'id_excercises',
     ];
 }

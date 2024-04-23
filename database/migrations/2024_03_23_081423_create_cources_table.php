@@ -22,6 +22,7 @@ return new class extends Migration
             $table->longText('cource_description');
             $table->longText('chapter')->nullable();
             $table->integer('is_block')->default(1);
+            $table->integer('final_excercise')->nullable();
             $table->timestamps();
         });
     }

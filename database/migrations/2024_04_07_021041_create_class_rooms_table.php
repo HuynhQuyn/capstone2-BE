@@ -23,6 +23,7 @@ return new class extends Migration
             $table->integer('id_cource');
             $table->integer('teacher');
             $table->longText('students');
+            $table->string('id_excercises')->nullable();
             $table->timestamps();
         });
     }

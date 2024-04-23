@@ -13,12 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('class_details', function (Blueprint $table) {
+        Schema::create('excercises', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('date');
-            $table->string('link')->nullable();
-            $table->integer('id_class');
+            $table->string('excercise_name');
+            $table->longText('excercise_content');
+            $table->integer('excercise_type')->default(0);
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('class_details');
+        Schema::dropIfExists('excercises');
     }
 };

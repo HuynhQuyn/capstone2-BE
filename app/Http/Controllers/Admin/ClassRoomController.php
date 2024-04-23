@@ -76,7 +76,7 @@ class ClassRoomController extends Controller
         $class = ClassRoom::where("id", $request->id)->first();
         $data = $request->all();
         if ($class) {
-            if ($data['updated_duration']) {
+            if ($data['changed_schedules']) {
                 ClassDetail::where("id_class", $request->id)->delete();
 
                 $schedules = json_decode($data['schedules']);
