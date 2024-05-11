@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ClassRoom;
+use App\Models\Cource;
 use App\Models\Excercise;
 use App\Models\Lesson;
 use Illuminate\Http\Request;
@@ -104,6 +105,24 @@ class ExcerciseController extends Controller
             return response()->json([
                 'excercises'  => $excercises,
             ], 200);
+        }
+        return response()->json(['error' => 'There are no excercises in the system'], 400);
+    }
+
+    public function getListFinalOfCource($id_cource)
+    {
+        $listLesson = Lesson::where('id_cource', $id_cource)->get();
+        $list_excercise = [];
+        if(count($listLesson) > 0){
+            foreach($listLesson as $value){
+                $list_excercise[] = $value->id_excercise;
+            }
+            $excercises = Excercise::whereIn('id', $list_excercise)->get();
+            if (count($excercises) > 0) {
+                return response()->json([
+                    'excercises'  => $excercises,
+                ], 200);
+            }
         }
         return response()->json(['error' => 'There are no excercises in the system'], 400);
     }

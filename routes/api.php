@@ -83,6 +83,7 @@ Route::group(['middleware' => 'jwt'], function ($router) {
 
         Route::get('/list-excercise', [\App\Http\Controllers\Admin\ExcerciseController::class, 'getList']);
         Route::get('/list-excercise-offline', [\App\Http\Controllers\Admin\ExcerciseController::class, 'getListOffline']);
+        Route::get('/list-excercise-final/{id_cource}', [\App\Http\Controllers\Admin\ExcerciseController::class, 'getListFinalOfCource']);
         Route::group(['prefix' => '/excercise'], function () {
             Route::post('/create', [\App\Http\Controllers\Admin\ExcerciseController::class, 'store']);
             Route::post('/get-data', [\App\Http\Controllers\Admin\ExcerciseController::class, 'getData']);
@@ -94,7 +95,13 @@ Route::group(['middleware' => 'jwt'], function ($router) {
 
     Route::group(['prefix' => '/user'], function () {
         Route::post('/list-cource', [\App\Http\Controllers\User\HomePageController::class, 'listCource']);
-        Route::post('/list-lesson', [\App\Http\Controllers\User\HomePageController::class, 'listLesson']);
+        Route::get('/cource/{id}', [\App\Http\Controllers\User\HomePageController::class, 'courceDetail']);
+        Route::get('/list-my-schedule', [\App\Http\Controllers\User\HomePageController::class, 'listSchedule']);
+        Route::get('/cource/register/{id_cource}', [\App\Http\Controllers\User\HomePageController::class, 'registerCource']);
+        Route::get('/cource/un-register/{id_cource}', [\App\Http\Controllers\User\HomePageController::class, 'unregisterCource']);
+        Route::get('/cource/check-register/{id_cource}', [\App\Http\Controllers\User\HomePageController::class, 'checkRegisterCource']);
+
+        Route::get('/excercise-offline/{id_cource}/{id_excercise}', [\App\Http\Controllers\User\ExcerciseController::class, 'getExcerciseOfflineByID']);
 
     });
 });
