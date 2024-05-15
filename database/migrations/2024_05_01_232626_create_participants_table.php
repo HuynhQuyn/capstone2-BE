@@ -18,6 +18,10 @@ return new class extends Migration
             $table->integer('user_id');
             $table->integer('cource_id');
             $table->integer('is_register')->default(0);
+            $table->integer('is_certificate')->default(0);
+            $table->integer('grades')->default(0);
+            $table->date('date_range')->nullable();
+            $table->date('date_expired')->nullable();
             $table->timestamps();
         });
     }

@@ -100,8 +100,11 @@ Route::group(['middleware' => 'jwt'], function ($router) {
         Route::get('/cource/register/{id_cource}', [\App\Http\Controllers\User\HomePageController::class, 'registerCource']);
         Route::get('/cource/un-register/{id_cource}', [\App\Http\Controllers\User\HomePageController::class, 'unregisterCource']);
         Route::get('/cource/check-register/{id_cource}', [\App\Http\Controllers\User\HomePageController::class, 'checkRegisterCource']);
+        Route::get('/cource/register-certificate/{id_cource}', [\App\Http\Controllers\User\HomePageController::class, 'registerCertificate']);
+
 
         Route::get('/excercise-offline/{id_cource}/{id_excercise}', [\App\Http\Controllers\User\ExcerciseController::class, 'getExcerciseOfflineByID']);
+        Route::get('/list-certificate', [\App\Http\Controllers\User\CertificateController::class, 'getListCertificate']);
 
     });
 });

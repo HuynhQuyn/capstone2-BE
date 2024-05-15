@@ -87,11 +87,17 @@ class HomePageController extends Controller
         $user = auth()->user();
         $cource = Cource::where('id', $id_cource)->where('is_block', 0)->first();
         if ($cource) {
-            Participant::create([
-                'user_id' => $user->id,
-                'cource_id' => $cource->id,
-                'is_register' => 1
-            ]);
+            $paticipant = Participant::where('user_id', $user->id)->where('cource_id', $id_cource)->first();
+            if($paticipant){
+                $paticipant->is_register = 1;
+                $paticipant->save();
+            }else{
+                Participant::create([
+                    'user_id' => $user->id,
+                    'cource_id' => $cource->id,
+                    'is_register' => 1
+                ]);
+            }
             return response()->json([
                 'message'  => 'Successfully registered for the course',
             ], 200);
@@ -104,11 +110,18 @@ class HomePageController extends Controller
         $user = auth()->user();
         $cource = Cource::where('id', $id_cource)->where('is_block', 0)->first();
         if ($cource) {
-            $paticipant = Participant::where('user_id', $user->id)->where('cource_id', $id_cource)->first();
-            $paticipant->delete();
+            $paticipant = Participant::where('user_id', $user->id)
+                                        ->where('is_certificate', 0)
+                                        ->where('cource_id', $id_cource)->first();
+            if($paticipant){
+                $paticipant->delete();
+                return response()->json([
+                    'message'  => 'Successfully un-registered for the course',
+                ], 200);
+            }
             return response()->json([
-                'message'  => 'Successfully un-registered for the course',
-            ], 200);
+                'error'  => 'Not possible to unsubscribe from a completed course',
+            ], 400);
         }
         return response()->json(['error' => 'There are no cource in the system'], 400);
     }
@@ -128,6 +141,27 @@ class HomePageController extends Controller
 
             return response()->json([
                 'is_register'  => $check,
+            ], 200);
+        }
+        return response()->json(['error' => 'There are no cource in the system'], 400);
+    }
+
+    public function registerCertificate($id_cource)
+    {
+        $user = auth()->user();
+        $cource = Cource::where('id', $id_cource)->where('is_block', 0)->first();
+        $paticipant = Participant::where('user_id', $user->id)
+                                ->where('is_register', 1)
+                                ->where('cource_id', $id_cource)->first();
+
+        if ($cource && $paticipant) {
+            $paticipant->is_certificate = 1;
+            $paticipant->date_range = date("Y/m/d");
+            $paticipant->date_expired = date('Y-m-d', strtotime(date("Y-m-d") . " + 365 day"));
+            $paticipant->save();
+
+            return response()->json([
+                'message'  => 'Successfully registered certificate for the course',
             ], 200);
         }
         return response()->json(['error' => 'There are no cource in the system'], 400);

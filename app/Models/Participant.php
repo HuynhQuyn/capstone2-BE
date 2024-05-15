@@ -15,5 +15,9 @@ class Participant extends Model
         'user_id',
         'cource_id',
         'is_register',
+        'is_certificate',
+        'grades',
+        'date_range',
+        'date_expired',
     ];
 }
