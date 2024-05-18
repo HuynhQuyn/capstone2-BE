@@ -68,7 +68,10 @@ class HomePageController extends Controller
     public function listSchedule()
     {
         $user = auth()->user();
-        $schedules = ClassRoom::whereJsonContains('class_rooms.students', (int)$user->id)
+        $schedules = ClassRoom::where(function($query) use ($user){
+                                    $query->whereJsonContains('class_rooms.students', (int)$user->id);
+                                    $query->orwhere('class_rooms.teacher', $user->id);
+                                })
                                 ->where('cources.is_block', 0)
                                 ->join('class_details', 'class_details.id_class', 'class_rooms.id')
                                 ->join('cources', 'cources.id', 'class_rooms.id_cource')

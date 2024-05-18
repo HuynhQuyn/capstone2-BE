@@ -13,7 +13,7 @@ class LessonController extends Controller
     {
         $lessons = Lesson::where('lessons.id_cource', $request->id_cource)
                             ->where("lessons.id_chapter", $request->id_chapter)
-                            ->orderBy('lessons.id', 'DESC')->get();
+                            ->orderBy('lessons.position')->get();
         if (count($lessons) > 0) {
             return response()->json([
                 'lessons'  => $lessons,

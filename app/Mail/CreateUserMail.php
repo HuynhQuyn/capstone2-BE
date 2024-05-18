@@ -12,7 +12,7 @@ use Illuminate\Queue\SerializesModels;
 class CreateUserMail extends Mailable
 {
     use Queueable, SerializesModels;
-
+    
     /**
      * Create a new message instance.
      *

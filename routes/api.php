@@ -106,5 +106,10 @@ Route::group(['middleware' => 'jwt'], function ($router) {
         Route::get('/excercise-offline/{id_cource}/{id_excercise}', [\App\Http\Controllers\User\ExcerciseController::class, 'getExcerciseOfflineByID']);
         Route::get('/list-certificate', [\App\Http\Controllers\User\CertificateController::class, 'getListCertificate']);
 
+        Route::post('/my-class-learning', [\App\Http\Controllers\User\CourceController::class, 'getListMyClassLearning']);
+        Route::get('/list-excercise/{id_class}', [\App\Http\Controllers\User\CourceController::class, 'getListExcerciseByClass']);
+        Route::get('/excercise-online/{id_class}/{id_excercise}', [\App\Http\Controllers\User\ExcerciseController::class, 'getExcerciseOnlineByID']);
+        Route::post('/submit-excercise-online', [\App\Http\Controllers\User\ExcerciseController::class, 'submitExcerciseOnline']);
+
     });
 });
