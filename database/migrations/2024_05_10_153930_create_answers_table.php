@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('excercise_id');
             $table->integer('user_id');
             $table->longText('answer_content');
+            $table->integer('status')->default(1);
             $table->timestamps();
         });
     }

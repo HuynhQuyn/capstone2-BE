@@ -47,7 +47,7 @@ class HomePageController extends Controller
                 foreach($chapters as $value){
                     $listLessonOfChapter = Lesson::where('lessons.id_cource', $id)
                             ->where("lessons.id_chapter", $value->id)
-                            ->orderBy('lessons.id', 'DESC')->get();
+                            ->orderBy('lessons.position')->get();
                     foreach($listLessonOfChapter as $v){
                         $lessons[] = $v;
                     }

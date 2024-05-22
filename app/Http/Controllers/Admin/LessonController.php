@@ -43,14 +43,7 @@ class LessonController extends Controller
                                     ->where("lessons.id_chapter", $request->id_chapter)
                                     ->orderBy('lessons.position', 'DESC')->first();
 
-            if(isset($request['lesson_video'])){
-                $response = cloudinary()->uploadVideo($request['lesson_video']->getRealPath(), [
-                    "resource_type" => "video",
-                    "chunk_size" => 50000000
-                    ])->getSecurePath();
-            }
-
-            $data["lesson_video"] = $response ?? "";
+            $data["lesson_video"] = $request['lesson_video'];
             $data["position"] = $lessson_old ? $lessson_old->position + 1 : 1;
             Lesson::create($data);
             return response()->json([
@@ -95,15 +88,7 @@ class LessonController extends Controller
     {
         $lesson = Lesson::where("id", $request->id)->first();
         $data = $request->all();
-        $response = "";
-        if(isset($request['lesson_video'])){
-            if(!is_string($request['lesson_video'])){
-                $response = cloudinary()->upload($request['lesson_video']->getRealPath())->getSecurePath();
-            }else{
-                $response = $request['lesson_video'];
-            }
-        }
-        $data["lesson_video"] = $response;
+        $data["lesson_video"] = $request['lesson_video'];
         if ($lesson) {
             $lesson->update($data);
             return response()->json([

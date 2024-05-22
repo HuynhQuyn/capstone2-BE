@@ -15,5 +15,6 @@ class Answer extends Model
         'excercise_id',
         'user_id',
         'answer_content',
+        'status',
     ];
 }

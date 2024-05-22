@@ -102,7 +102,6 @@ Route::group(['middleware' => 'jwt'], function ($router) {
         Route::get('/cource/check-register/{id_cource}', [\App\Http\Controllers\User\HomePageController::class, 'checkRegisterCource']);
         Route::get('/cource/register-certificate/{id_cource}', [\App\Http\Controllers\User\HomePageController::class, 'registerCertificate']);
 
-
         Route::get('/excercise-offline/{id_cource}/{id_excercise}', [\App\Http\Controllers\User\ExcerciseController::class, 'getExcerciseOfflineByID']);
         Route::get('/list-certificate', [\App\Http\Controllers\User\CertificateController::class, 'getListCertificate']);
 
@@ -110,6 +109,13 @@ Route::group(['middleware' => 'jwt'], function ($router) {
         Route::get('/list-excercise/{id_class}', [\App\Http\Controllers\User\CourceController::class, 'getListExcerciseByClass']);
         Route::get('/excercise-online/{id_class}/{id_excercise}', [\App\Http\Controllers\User\ExcerciseController::class, 'getExcerciseOnlineByID']);
         Route::post('/submit-excercise-online', [\App\Http\Controllers\User\ExcerciseController::class, 'submitExcerciseOnline']);
+
+        Route::post('/my-class-teaching', [\App\Http\Controllers\User\CourceController::class, 'getListMyClassTeaching']);
+        Route::get('/list-excercise-teaching/{id_class}', [\App\Http\Controllers\User\CourceController::class, 'getListExcerciseTeachingByClass']);
+        Route::get('/list-user-done-excercise/{id_class}/{id_excercise}', [\App\Http\Controllers\User\CourceController::class, 'getListUserDoneExcercise']);
+        Route::get('/answer-detail/{id_class}/{id_excercise}/{id_student}', [\App\Http\Controllers\User\ExcerciseController::class, 'getAnswerDetail']);
+        Route::post('/grade-excercise-online', [\App\Http\Controllers\User\ExcerciseController::class, 'gradeExcerciseOnline']);
+        Route::get('/list-user-belong-class/{id_class}', [\App\Http\Controllers\User\CourceController::class, 'getListUserBelongClass']);
 
     });
 });

@@ -9,6 +9,7 @@ use App\Models\Cource;
 use App\Models\Excercise;
 use App\Models\Participant;
 use App\Models\Question;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ExcerciseController extends Controller
@@ -94,6 +95,61 @@ class ExcerciseController extends Controller
             return response()->json([
                 'message' => 'Successfully submit answer',
             ], 200);
+        }
+        return response()->json(['error' => 'There are no class in the system'], 400);
+    }
+
+    public function getAnswerDetail($id_class, $id_excercise, $id_student)
+    {
+        $user = auth()->user();
+        $class = ClassRoom::where('class_rooms.teacher', $user->id)
+                    ->where('cources.is_block', 0)
+                    ->where('class_rooms.id', $id_class)
+                    ->join('cources', 'cources.id', 'class_rooms.id_cource')
+                    ->select('class_rooms.*')
+                    ->first();
+        if ($class) {
+            $answer = Answer::where('answers.class_id', $id_class)
+                        ->where('answers.excercise_id', $id_excercise)
+                        ->join('users', 'answers.user_id', 'users.id')
+                        ->where('answers.user_id', $id_student)
+                        ->select('answers.*')->first();
+            if ($answer){
+                return response()->json([
+                    'answer'  => $answer,
+                ], 200);
+            }
+            return response()->json(['error' => 'There are no answer in the system'], 400);
+        }
+        return response()->json(['error' => 'There are no class in the system'], 400);
+    }
+
+    public function gradeExcerciseOnline(Request $request)
+    {
+        $user = auth()->user();
+        $class = ClassRoom::where('class_rooms.teacher', $user->id)
+                    ->where('cources.is_block', 0)
+                    ->where('class_rooms.id', $request->class_id)
+                    ->join('cources', 'cources.id', 'class_rooms.id_cource')
+                    ->select('class_rooms.*')
+                    ->first();
+
+        $excercise = Excercise::where('id', $request->excercise_id)->first();
+
+        if ($class && $excercise) {
+            $answer = Answer::where('class_id', $request->class_id)
+                            ->where('excercise_id', $request->excercise_id)
+                            ->where('user_id', $user->id)
+                            ->first();
+            if ($answer) {
+                $answer->answer_content = $request->answer_content;
+                $answer->status = 2;
+                $answer->save();
+                return response()->json([
+                    'message' => 'Successfully grade answer',
+                ], 200);
+            }
+            return response()->json(['error' => 'There are no answer in the system'], 400);
         }
         return response()->json(['error' => 'There are no class in the system'], 400);
     }
