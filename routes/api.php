@@ -94,6 +94,8 @@ Route::group(['middleware' => 'jwt'], function ($router) {
     });
 
     Route::group(['prefix' => '/user'], function () {
+        Route::post('/change-password', [\App\Http\Controllers\User\HomePageController::class, 'changePass']);
+
         Route::post('/list-cource', [\App\Http\Controllers\User\HomePageController::class, 'listCource']);
         Route::get('/cource/{id}', [\App\Http\Controllers\User\HomePageController::class, 'courceDetail']);
         Route::get('/list-my-schedule', [\App\Http\Controllers\User\HomePageController::class, 'listSchedule']);
@@ -116,6 +118,8 @@ Route::group(['middleware' => 'jwt'], function ($router) {
         Route::get('/answer-detail/{id_class}/{id_excercise}/{id_student}', [\App\Http\Controllers\User\ExcerciseController::class, 'getAnswerDetail']);
         Route::post('/grade-excercise-online', [\App\Http\Controllers\User\ExcerciseController::class, 'gradeExcerciseOnline']);
         Route::get('/list-user-belong-class/{id_class}', [\App\Http\Controllers\User\CourceController::class, 'getListUserBelongClass']);
+        Route::post('/teacher/un-register-certificate', [\App\Http\Controllers\User\CourceController::class, 'unregisterCertificateCourceOnline']);
+        Route::post('/teacher/register-certificate', [\App\Http\Controllers\User\CourceController::class, 'registerCertificateCourceOnline']);
 
     });
 });

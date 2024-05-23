@@ -3,15 +3,35 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ChanngePasswordRequest;
 use App\Models\ClassDetail;
 use App\Models\ClassRoom;
 use App\Models\Cource;
 use App\Models\Lesson;
 use App\Models\Participant;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomePageController extends Controller
 {
+    public function changePass(ChanngePasswordRequest $request)
+    {
+        $user = auth()->user();
+        if ($user) {
+            $check = Auth::guard('api')->attempt([
+                'email'         => $user->email,
+                'password'      => $request->old_password
+            ]);
+            if ($check) {
+                $data = User::find($user->id);
+                $data->password = bcrypt($request->password);
+                $data->save();
+                return response()->json(['message'  => 'Successfully change password'], 200);
+            }
+        }
+        return response()->json(['error' => 'There are no cources in the system'], 400);
+    }
     public function listCource(Request $request)
     {
         $user = auth()->user();

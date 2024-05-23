@@ -102,12 +102,15 @@ class ExcerciseController extends Controller
     public function getAnswerDetail($id_class, $id_excercise, $id_student)
     {
         $user = auth()->user();
-        $class = ClassRoom::where('class_rooms.teacher', $user->id)
-                    ->where('cources.is_block', 0)
-                    ->where('class_rooms.id', $id_class)
-                    ->join('cources', 'cources.id', 'class_rooms.id_cource')
-                    ->select('class_rooms.*')
-                    ->first();
+        $class = ClassRoom::where(function($query) use ($user){
+                                $query->whereJsonContains('class_rooms.students', (int)$user->id);
+                                $query->orwhere('class_rooms.teacher', $user->id);
+                            })
+                            ->where('cources.is_block', 0)
+                            ->where('class_rooms.id', $id_class)
+                            ->join('cources', 'cources.id', 'class_rooms.id_cource')
+                            ->select('class_rooms.*')
+                            ->first();
         if ($class) {
             $answer = Answer::where('answers.class_id', $id_class)
                         ->where('answers.excercise_id', $id_excercise)
@@ -139,7 +142,7 @@ class ExcerciseController extends Controller
         if ($class && $excercise) {
             $answer = Answer::where('class_id', $request->class_id)
                             ->where('excercise_id', $request->excercise_id)
-                            ->where('user_id', $user->id)
+                            ->where('user_id', $request->user_id)
                             ->first();
             if ($answer) {
                 $answer->answer_content = $request->answer_content;

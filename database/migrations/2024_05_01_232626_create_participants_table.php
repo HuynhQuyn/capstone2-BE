@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id');
             $table->integer('cource_id');
+            $table->integer('class_id')->nullable();
             $table->integer('is_register')->default(0);
             $table->integer('is_certificate')->default(0);
             $table->integer('grades')->default(0);
